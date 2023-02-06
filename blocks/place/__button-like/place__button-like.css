@@ -4,7 +4,7 @@
   margin: 30px 20px 30px 30px;
   width: 22px;
   aspect-ratio: 22/19;
-  background: url("../../../images/svg/like.svg");  
+  background: url("../../../images/svg/like.svg");
   grid-area: like;
   align-self: center;
 }
