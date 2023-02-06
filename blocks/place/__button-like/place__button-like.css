@@ -1,0 +1,14 @@
+.place__button-like {
+  border: 0;
+  padding: 0;
+  margin: 30px 20px 30px 30px;
+  width: 22px;
+  aspect-ratio: 22/19;
+  background: url("../../../images/svg/like.svg");  
+  grid-area: like;
+  align-self: center;
+}
+
+.place__button-like:hover{
+  opacity: 0.5;
+}

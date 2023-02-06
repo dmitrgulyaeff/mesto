@@ -1,0 +1,23 @@
+.profile__button-profile-editing {
+  padding: 11px;
+  background: url("../../../images/svg/pen.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid #ffffff;
+  grid-area: pen;
+  align-self: end;
+  justify-self: end;
+}
+
+@media screen and (max-width: 1000px) {
+  .profile__button-profile-editing {
+    justify-self: start;
+    background-size: 7.5px;
+    padding: 8.5px;
+    margin-left: 10px;
+  }
+}
+
+.profile__button-profile-editing:hover {
+  opacity: 0.6;
+}
