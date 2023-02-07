@@ -1,4 +1,5 @@
-.popup__input {
+.popup__form-input {
+  margin-bottom: 30px;
   border: none;
   outline: none;
   font-size: 14px;

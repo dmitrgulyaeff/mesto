@@ -1,4 +1,4 @@
-.popup__button-cross {
+.popup__button-close {
   display: flex;
   aspect-ratio: 1;
   background: url("../../../images/svg/cross.svg");
@@ -13,13 +13,13 @@
 }
 
 @media screen and (max-width: 600px) {
-  .popup__button-cross {
+  .popup__button-close {
     width: 20px;
     right: 0px;
     top: -36px;
   }
 }
 
-.popup__button-cross:hover {
+.popup__button-close:hover {
   opacity: 0.6;
 }
