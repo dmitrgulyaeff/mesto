@@ -7,9 +7,9 @@ const profileBtnProfileEditing = document.querySelector(
 
 // popup
 const popup = document.querySelector(".popup");
-const popupInputElName = document.querySelector(".popup__input_el_name");
+const popupInputElName = document.querySelector(".popup__form-input_el_name");
 const popupInputElDescription = document.querySelector(
-  ".popup__input_el_description"
+  ".popup__form-input_el_description"
 );
 const popupFormButtonSubmit = document.querySelector(
   ".popup__form-button-submit"
