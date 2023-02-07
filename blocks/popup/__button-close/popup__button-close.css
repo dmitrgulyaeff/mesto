@@ -1,4 +1,5 @@
 .popup__button-close {
+  cursor: pointer;
   display: flex;
   aspect-ratio: 1;
   background: url("../../../images/svg/cross.svg");
