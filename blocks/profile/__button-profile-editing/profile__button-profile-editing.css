@@ -1,4 +1,6 @@
 .profile__button-profile-editing {
+  margin-bottom: 10px;
+  cursor: pointer;
   padding: 11px;
   background: url("../../../images/svg/pen.svg");
   background-repeat: no-repeat;
@@ -11,6 +13,7 @@
 
 @media screen and (max-width: 1000px) {
   .profile__button-profile-editing {
+    margin-bottom: 7px;
     justify-self: start;
     background-size: 7.5px;
     padding: 8.5px;

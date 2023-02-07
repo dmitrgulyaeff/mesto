@@ -1,51 +1,40 @@
 // profile
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__description");
-const profileBtnProfileEditing = document.querySelector(".profile__button-profile-editing");
+const profileBtnProfileEditing = document.querySelector(
+  ".profile__button-profile-editing"
+);
 
 // popup
 const popup = document.querySelector(".popup");
-const popupInputName = document.querySelector(".popup__input_name"); 
-const poputInputDescription = document.querySelector(".popup__input_description");
-const popupButtonSubmit = document.querySelector(".popup__button-submit");
-const popupButtonCross = document.querySelector(".popup__button-cross");
-// place
-const placeButtonsLike = document.querySelectorAll(".place__button-like");
-
-
-// Вызываем popup по нажатии на profileBtnProfileEditing 
-profileBtnProfileEditing.addEventListener("click", () => {
+const popupInputElName = document.querySelector(".popup__input_el_name");
+const popupInputElDescription = document.querySelector(
+  ".popup__input_el_description"
+);
+const popupFormButtonSubmit = document.querySelector(
+  ".popup__form-button-submit"
+);
+const popupButtonClose = document.querySelector(".popup__button-close");
+function openPopun() {
   popup.classList.add("popup_opened");
-  // popupInputName задаем текущее значение profileName
-  popupInputName.value = profileName.textContent;
-  poputInputDescription.value = profileDescription.textContent;
-});
-
-// Сохранить в попапе
-popupButtonSubmit.addEventListener("click", (event) => {
-  event.preventDefault();
-  profileName.textContent = popupInputName.value;
-  profileDescription.textContent = poputInputDescription.value;
+}
+function closePopun() {
   popup.classList.remove("popup_opened");
-});
+}
 
-// Закрыть попап по нажатии на крестик
-popupButtonCross.addEventListener("click", (event) => {
+function initializePopup() {
+  openPopun();
+  popupInputElName.value = profileName.textContent;
+  popupInputElDescription.value = profileDescription.textContent;
+}
+profileBtnProfileEditing.addEventListener("click", initializePopup);
+
+function applyForm(event) {
   event.preventDefault();
-  popup.classList.remove("popup_opened");
-});
+  profileName.textContent = popupInputElName.value;
+  profileDescription.textContent = popupInputElDescription.value;
+  closePopun();
+}
+popupFormButtonSubmit.addEventListener("click", applyForm);
 
-// Закрыть попап по свободному полю за формой
-popup.addEventListener("click", (event) => {
-  event.preventDefault();
-  if (event.currentTarget === event.target) {
-    popup.classList.remove("popup_opened");
-  }
-});
-
-// Лайки
-placeButtonsLike.forEach((placeBtnLike) => {
-  placeBtnLike.addEventListener("click", () => {
-    placeBtnLike.classList.toggle("place__button-like_liked");
-  });
-});
+popupButtonClose.addEventListener("click", closePopun);

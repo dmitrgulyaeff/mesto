@@ -1,8 +1,11 @@
 .profile {
   display: grid;
   width: 100%;
-  grid-template-columns: 120px 30px minmax(0, max-content) 23px 24px minmax(200px, 1fr);
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 120px 30px minmax(0, max-content) 21px 24px minmax(
+      391px,
+      1fr
+    );
+  grid-template-rows: 70px 50px;
   grid-template-areas:
     "avatar . name . pen plus"
     "avatar . description . . plus";
