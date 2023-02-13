@@ -16,142 +16,114 @@
         <img class="profile__avatar" src="./images/Kusto.jpg" alt="Кусто" />
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button
-          class="profile__button-profile-editing"
+          class="profile__button-edit-profile"
           type="button"
           aria-label="Редактировать профиль"
         ></button>
         <p class="profile__description">Исследователь океана</p>
         <button
-          class="profile__button-adding-place"
+          class="profile__button-add-place"
           type="button"
           aria-label="Добавить место"
         ></button>
       </section>
       <section class="places">
-        <ul class="places__list">
-          <li class="places__list-item">
-            <article class="place">
-              <img
-                class="place__photo"
-                src="./images/place/place__Karachaevsk.jpg"
-                alt="Карачаевск"
-              />
-              <h2 class="place__name">Карачаевск</h2>
-              <button
-                class="place__button-like"
-                type="button"
-                aria-label="Лайк"
-              ></button>
-            </article>
-          </li>
-          <li class="places__list-item">
-            <article class="place">
-              <img
-                class="place__photo"
-                src="./images/place/place__Elbrus.jpg"
-                alt="Карачаевск"
-              />
-              <h2 class="place__name">Гора Эльбрус</h2>
-              <button
-                class="place__button-like"
-                type="button"
-                aria-label="Лайк"
-              ></button>
-            </article>
-          </li>
-          <li class="places__list-item">
-            <article class="place">
-              <img
-                class="place__photo"
-                src="./images/place/place__Dombai.jpg"
-                alt="Карачаевск"
-              />
-              <h2 class="place__name">Домбай</h2>
-              <button
-                class="place__button-like"
-                type="button"
-                aria-label="Лайк"
-              ></button>
-            </article>
-          </li>
-          <li class="places__list-item">
-            <article class="place">
-              <img
-                class="place__photo"
-                src="./images/place/place__Elbrus.jpg"
-                alt="Карачаевск"
-              />
-              <h2 class="place__name">Гора Эльбрус</h2>
-              <button
-                class="place__button-like"
-                type="button"
-                aria-label="Лайк"
-              ></button>
-            </article>
-          </li>
-          <li class="places__list-item">
-            <article class="place">
-              <img
-                class="place__photo"
-                src="./images/place/place__Dombai.jpg"
-                alt="Карачаевск"
-              />
-              <h2 class="place__name">Домбай</h2>
-              <button
-                class="place__button-like"
-                type="button"
-                aria-label="Лайк"
-              ></button>
-            </article>
-          </li>
-          <li class="places__list-item">
-            <article class="place">
-              <img
-                class="place__photo"
-                src="./images/place/place__Karachaevsk.jpg"
-                alt="Карачаевск"
-              />
-              <h2 class="place__name">Карачаево-Черкесия</h2>
-              <button
-                class="place__button-like"
-                type="button"
-                aria-label="Лайк"
-              ></button>
-            </article>
-          </li>
-        </ul>
+        <ul class="places__list"></ul>
       </section>
     </main>
     <footer class="footer">
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
-    <section class="popup" name="profile-editing">
-      <div class="popup__inner">
-        <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__form" name="edit-profile-form">
-          <input
-            class="popup__form-input popup__form-input_el_name"
-            type="text"
-            placeholder="Имя"
-            name="name"
-          />
-          <input
-            class="popup__form-input popup__form-input_el_description"
-            type="text"
-            placeholder="О себе"
-            name="description"
-          />
-          <button class="popup__form-button-submit" type="submit">
-            Сохранить
-          </button>
-        </form>
+
+    <section class="popup popup_el_add-place">
+      <div class="popup__inner popup__inner_type_form">
         <button
           class="popup__button-close"
           type="button"
           aria-label="Закрыть поп-ап"
         ></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form class="popup__form" name="profile-editing">
+          <input
+            class="popup__form-input popup__form-input_el_place-name"
+            type="text"
+            placeholder="Название"
+            name="name"
+          /><input
+            class="popup__form-input popup__form-input_el_place-picture-url"
+            type="text"
+            placeholder="Ссылка на картинку"
+            name="pictureURL"
+          /><button
+            class="popup__form-button-submit popup__form-button-submit_el_adding-place"
+            type="submit"
+          >
+            Создать
+          </button>
+        </form>
       </div>
     </section>
+
+    <section class="popup popup_el_edit-profile">
+      <div class="popup__inner popup__inner_type_form">
+        <button
+          class="popup__button-close"
+          type="button"
+          aria-label="Закрыть поп-ап"
+        ></button>
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <form class="popup__form" name="profile-editing">
+          <input
+            class="popup__form-input popup__form-input_el_name"
+            type="text"
+            placeholder="Имя"
+            name="name"
+          /><input
+            class="popup__form-input popup__form-input_el_description"
+            type="text"
+            placeholder="О себе"
+            name="description"
+          /><button
+            class="popup__form-button-submit popup__form-button-submit_el_edit-profile"
+            type="submit"
+          >
+            Сохранить
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="popup popup_el_zoom-image">
+      <div class="popup__inner popup__inner_type_zoom-image">
+        <button
+          class="popup__button-close"
+          type="button"
+          aria-label="Закрыть поп-ап"
+        ></button>
+        <img class="popup__image" />
+        <p class="popup__image-description"></p>
+      </div>
+    </section>
+
+    <template id="places__list-item">
+      <li class="places__list-item">
+        <article class="place">
+          <button
+            class="place__button-delete-place"
+            type="button"
+            aria-label="Удалить"
+          ></button>
+
+          <img class="place__photo" />
+          <h2 class="place__name"></h2>
+          <button
+            class="place__button-like"
+            type="button"
+            aria-label="Лайк"
+          ></button>
+        </article>
+      </li>
+    </template>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
