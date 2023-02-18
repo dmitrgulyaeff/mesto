@@ -79,8 +79,6 @@ function openPopup(popupToOpen) {
 function closePopup(popupOpened) {
   popupOpened.classList.remove("popup_opened");
   const popupForm = popupOpened.querySelector(".popup__form");
-  console.log(popupForm);
-  console.log(Boolean(popupForm));
   if (popupForm) {
     popupForm.reset();
   }
