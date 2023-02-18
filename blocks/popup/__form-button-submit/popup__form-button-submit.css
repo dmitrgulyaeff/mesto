@@ -1,8 +1,9 @@
 .popup__form-button-submit {
   cursor: pointer;
   margin-top: 18px;
-  border: none;
-  padding: 14px 0;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 13px 0;
   background-color: black;
   font-size: 18px;
   line-height: 22px;
