@@ -78,6 +78,12 @@ function openPopup(popupToOpen) {
 
 function closePopup(popupOpened) {
   popupOpened.classList.remove("popup_opened");
+  const popupForm = popupOpened.querySelector(".popup__form");
+  console.log(popupForm);
+  console.log(Boolean(popupForm));
+  if (popupForm) {
+    popupForm.reset();
+  }
 }
 
 const popupButtonsClose = document.querySelectorAll(".popup__button-close");
@@ -143,4 +149,26 @@ popupElAddPlaceForm.addEventListener("submit", (event) => {
   prependPlaceToPlacesList(placeName, placePictureURL);
   event.target.reset();
   closePopup(popupElAddPlace);
+});
+
+// close by esc
+const popups = [popupElEditProfile, popupElAddPlace, popupElZoomImage];
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    const popupOpened = popups.find((p) =>
+      p.classList.contains("popup_opened")
+    );
+    if (popupOpened) {
+      closePopup(popupOpened);
+    }
+  }
+});
+
+// close by overlay click
+popups.forEach((p) => {
+  p.addEventListener("mousedown", (event) => {
+    if (event.target === event.currentTarget) {
+      closePopup(p);
+    }
+  });
 });

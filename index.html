@@ -43,18 +43,28 @@
           aria-label="Закрыть поп-ап"
         ></button>
         <h2 class="popup__title">Новое место</h2>
-        <form class="popup__form" name="profile-editing">
+        <form class="popup__form" name="adding-place">
           <input
+            id="place-name-input"
             class="popup__form-input popup__form-input_el_place-name"
             type="text"
             placeholder="Название"
             name="name"
-          /><input
+            minlength="2"
+            maxlength="30"
+            required
+          />
+          <span class="popup__form-input-error place-name-input-error"></span>
+          <input
+            id="place-url-input"
             class="popup__form-input popup__form-input_el_place-picture-url"
-            type="text"
+            type="url"
             placeholder="Ссылка на картинку"
             name="pictureURL"
-          /><button
+            required
+          />
+          <span class="popup__form-input-error place-url-input-error"></span>
+          <button
             class="popup__form-button-submit popup__form-button-submit_el_adding-place"
             type="submit"
           >
@@ -74,16 +84,30 @@
         <h2 class="popup__title">Редактировать профиль</h2>
         <form class="popup__form" name="profile-editing">
           <input
+            id="profile-name-input"
             class="popup__form-input popup__form-input_el_name"
             type="text"
             placeholder="Имя"
             name="name"
-          /><input
+            minlength="2"
+            maxlength="40"
+            required
+          />
+          <span class="popup__form-input-error profile-name-input-error"></span>
+          <input
+            id="pofile-description-input"
             class="popup__form-input popup__form-input_el_description"
             type="text"
             placeholder="О себе"
             name="description"
-          /><button
+            minlength="2"
+            maxlength="200"
+            required
+          />
+          <span
+            class="popup__form-input-error pofile-description-input-error"
+          ></span>
+          <button
             class="popup__form-button-submit popup__form-button-submit_el_edit-profile"
             type="submit"
           >
@@ -125,5 +149,6 @@
       </li>
     </template>
     <script src="./scripts/index.js"></script>
+    <script src="./scripts/validate.js"></script>
   </body>
 </html>
