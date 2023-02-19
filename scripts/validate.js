@@ -47,11 +47,11 @@ const setEventListeners = (formElement, formSettings) => {
   });
 
   // deep reset form
-  formElement.addEventListener("reset", () => {
-    inputList.forEach((inputElement) => {
-      hideInputError(formElement, inputElement, formSettings);
-    });
-  });
+  // formElement.addEventListener("reset", () => {
+  //   inputList.forEach((inputElement) => {
+  //     hideInputError(formElement, inputElement, formSettings);
+  //   });
+  // });
 };
 
 function hasInvalidInput(inputList) {
@@ -63,8 +63,10 @@ function hasInvalidInput(inputList) {
 function toggleButtonState(inputList, buttonElement, formSettings) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(formSettings["inactiveButtonClass"]);
+    buttonElement.setAttribute("disabled", "");
   } else {
     buttonElement.classList.remove(formSettings["inactiveButtonClass"]);
+    buttonElement.removeAttribute("disabled");
   }
 }
 

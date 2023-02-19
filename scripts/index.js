@@ -72,16 +72,25 @@ initialCards.forEach((card) => {
   prependPlaceToPlacesList(card.name, card.link);
 });
 
+function closeByEscape(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_opened");
+    closePopup(openedPopup);
+  }
+}
+
 function openPopup(popupToOpen) {
   popupToOpen.classList.add("popup_opened");
+  document.addEventListener("keydown", closeByEscape);
 }
 
 function closePopup(popupOpened) {
   popupOpened.classList.remove("popup_opened");
-  const popupForm = popupOpened.querySelector(".popup__form");
-  if (popupForm) {
-    popupForm.reset();
-  }
+  document.removeEventListener("keydown", closeByEscape);
+  // const popupForm = popupOpened.querySelector(".popup__form");
+  // if (popupForm) {
+  //   popupForm.reset();
+  // }
 }
 
 const popupButtonsClose = document.querySelectorAll(".popup__button-close");
@@ -150,17 +159,7 @@ popupElAddPlaceForm.addEventListener("submit", (event) => {
 });
 
 // close by esc
-const popups = [popupElEditProfile, popupElAddPlace, popupElZoomImage];
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    const popupOpened = popups.find((p) =>
-      p.classList.contains("popup_opened")
-    );
-    if (popupOpened) {
-      closePopup(popupOpened);
-    }
-  }
-});
+const popups = document.querySelectorAll(".popup");
 
 // close by overlay click
 popups.forEach((p) => {
