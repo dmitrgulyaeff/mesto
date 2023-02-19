@@ -39,6 +39,12 @@ const setEventListeners = (formElement, formSettings) => {
   );
   toggleButtonState(inputList, buttonElement, formSettings);
 
+  formElement.addEventListener("reset", () => {
+    setTimeout(() => {
+      toggleButtonState(inputList, buttonElement, formSettings);
+    }, 0);
+  });
+
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", function () {
       checkInputValidity(formElement, inputElement, formSettings);
