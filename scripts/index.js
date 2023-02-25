@@ -1,44 +1,15 @@
-const placesListItemTemplate =
-  document.querySelector("#places__list-item").content;
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
 
 const placesList = document.querySelector(".places__list");
 
-const popupElZoomImage = document.querySelector(".popup_el_zoom-image");
-const popupImage = popupElZoomImage.querySelector(".popup__image");
-const popupImageDescription = popupElZoomImage.querySelector(
-  ".popup__image-description"
-);
-
-function createCard(cardName, cardPhotoURL) {
-  const placesListItem = placesListItemTemplate
-    .querySelector(".places__list-item")
-    .cloneNode(true);
-  placesListItem.querySelector(".place__name").textContent = cardName;
-  const placePhoto = placesListItem.querySelector(".place__photo");
-  placePhoto.src = cardPhotoURL;
-  placePhoto.alt = cardName;
-  placePhoto.addEventListener("click", () => {
-    popupImage.src = cardPhotoURL;
-    popupImage.alt = cardName;
-    popupImageDescription.textContent = cardName;
-    openPopup(popupElZoomImage);
-  });
-  const placeButtonLike = placesListItem.querySelector(".place__button-like");
-  placeButtonLike.addEventListener("click", () => {
-    placeButtonLike.classList.toggle("place__button-like_liked");
-  });
-  const placeButtonDeletePlace = placesListItem.querySelector(
-    ".place__button-delete-place"
-  );
-  placeButtonDeletePlace.addEventListener("click", () => {
-    placesListItem.remove();
-  });
-  return placesListItem;
-}
-
-function prependPlaceToPlacesList(placeName, placePhotoURL) {
-  const card = createCard(placeName, placePhotoURL);
-  placesList.prepend(card);
+function prependPlaceToPlacesList(
+  cardName,
+  cardPhotoURL,
+  templateCardSelector
+) {
+  const card = new Card(cardName, cardPhotoURL, templateCardSelector);
+  placesList.prepend(card.generateCard());
 }
 
 const initialCards = [
@@ -69,7 +40,7 @@ const initialCards = [
 ];
 
 initialCards.forEach((card) => {
-  prependPlaceToPlacesList(card.name, card.link);
+  prependPlaceToPlacesList(card.name, card.link, "#places__list-item");
 });
 
 function closeByEscape(evt) {
@@ -79,7 +50,7 @@ function closeByEscape(evt) {
   }
 }
 
-function openPopup(popupToOpen) {
+export function openPopup(popupToOpen) {
   popupToOpen.classList.add("popup_opened");
   document.addEventListener("keydown", closeByEscape);
 }
@@ -87,10 +58,6 @@ function openPopup(popupToOpen) {
 function closePopup(popupOpened) {
   popupOpened.classList.remove("popup_opened");
   document.removeEventListener("keydown", closeByEscape);
-  // const popupForm = popupOpened.querySelector(".popup__form");
-  // if (popupForm) {
-  //   popupForm.reset();
-  // }
 }
 
 const popupButtonsClose = document.querySelectorAll(".popup__button-close");
@@ -153,7 +120,7 @@ popupElAddPlaceForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const placeName = popupFormInputElPlaceName.value;
   const placePictureURL = popupFormInputElPlacePictureUrl.value;
-  prependPlaceToPlacesList(placeName, placePictureURL);
+  prependPlaceToPlacesList(placeName, placePictureURL, "#places__list-item");
   event.target.reset();
   closePopup(popupElAddPlace);
 });
@@ -168,4 +135,19 @@ popups.forEach((p) => {
       closePopup(p);
     }
   });
+});
+
+// add validation to all forms
+const allForms = document.querySelectorAll(".popup__form");
+const formSettings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__form-input",
+  submitButtonSelector: ".popup__form-button-submit",
+  inactiveButtonClass: "popup__form-button-submit_inactive",
+  inputErrorClass: "popup__form-input_type__error",
+  errorClass: "popup__form-input-error_visible",
+};
+allForms.forEach((form) => {
+  const formValidator = new FormValidator(formSettings, form);
+  formValidator.enableValidation();
 });
