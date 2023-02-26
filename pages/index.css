@@ -29,6 +29,7 @@
 @import url("../blocks/place/__button-delete-place/place__button-delete-place.css");
 
 @import url("../blocks/popup/popup.css");
+@import url("../blocks/popup/_el/popup_el_zoom-image.css");
 @import url("../blocks/popup/_opened/popup_opened.css");
 @import url("../blocks/popup/__inner/popup__inner.css");
 @import url("../blocks/popup/__inner/_type/popup__inner_type_form.css");
