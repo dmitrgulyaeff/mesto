@@ -3,13 +3,17 @@ import FormValidator from "./FormValidator.js";
 
 const placesList = document.querySelector(".places__list");
 
+function createCard(cardName, cardPhotoURL, templateCardSelector) {
+  const card = new Card(cardName, cardPhotoURL, templateCardSelector);
+  return card.generateCard();
+}
+
 function prependPlaceToPlacesList(
   cardName,
   cardPhotoURL,
   templateCardSelector
 ) {
-  const card = new Card(cardName, cardPhotoURL, templateCardSelector);
-  placesList.prepend(card.generateCard());
+  placesList.prepend(createCard(cardName, cardPhotoURL, templateCardSelector));
 }
 
 const initialCards = [
@@ -138,7 +142,6 @@ popups.forEach((p) => {
 });
 
 // add validation to all forms
-const allForms = document.querySelectorAll(".popup__form");
 const formSettings = {
   formSelector: ".popup__form",
   inputSelector: ".popup__form-input",
@@ -147,7 +150,11 @@ const formSettings = {
   inputErrorClass: "popup__form-input_type__error",
   errorClass: "popup__form-input-error_visible",
 };
-allForms.forEach((form) => {
-  const formValidator = new FormValidator(formSettings, form);
-  formValidator.enableValidation();
-});
+
+const profileValidation = new FormValidator(
+  formSettings,
+  popupElEditProfileForm
+);
+const newCardValidation = new FormValidator(formSettings, popupElAddPlaceForm);
+profileValidation.enableValidation();
+newCardValidation.enableValidation();

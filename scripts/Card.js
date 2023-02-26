@@ -7,15 +7,6 @@ const popupImageDescription = popupElZoomImage.querySelector(
 );
 
 export default class Card {
-  _getCardTemplate() {
-    const cardElement = document
-      .querySelector(this._templateCardSelector)
-      .content.querySelector(".places__list-item")
-      .cloneNode(true);
-
-    return cardElement;
-  }
-
   constructor(cardName, cardPhotoURL, templateCardSelector) {
     this._cardName = cardName;
     this._cardPhotoURL = cardPhotoURL;
@@ -31,47 +22,69 @@ export default class Card {
     );
   }
 
-  _setNameToCard(textContent) {
-    this._cardNameElement.textContent = textContent;
+  _getCardTemplate() {
+    const cardElement = document
+      .querySelector(this._templateCardSelector)
+      .content.querySelector(".places__list-item")
+      .cloneNode(true);
+
+    return cardElement;
   }
 
-  _setImageToCard(imageSrc, imageAlt) {
-    this._cardImageElement.src = imageSrc;
-    this._cardImageElement.alt = imageAlt;
+  _setNameToCard() {
+    this._cardNameElement.textContent = this._cardName;
   }
 
-  _addZoomEventToCardImage(
-    popupImageSrc,
-    popupImageCaption,
-    popupImageAlt = popupImageCaption
-  ) {
-    this._cardImageElement.addEventListener("click", () => {
-      popupImage.src = popupImageSrc;
-      popupImage.alt = popupImageAlt;
-      popupImageDescription.textContent = popupImageCaption;
-      openPopup(popupElZoomImage);
-    });
+  _setImageToCard() {
+    this._cardImageElement.src = this._cardPhotoURL;
+    this._cardImageElement.alt = this._cardName;
   }
 
-  _addLikeEventToButtonLike() {
-    this._cardButtonLikeElement.addEventListener("click", () => {
-      this._cardButtonLikeElement.classList.toggle("place__button-like_liked");
-    });
-  }
+  _addZoomEventToCardImage = () => {
+    popupImage.src = this._cardPhotoURL;
+    popupImage.alt = this._cardName;
+    popupImageDescription.textContent = this._cardName;
+    openPopup(popupElZoomImage);
+  };
 
-  _addDeleteCardEventToButtonDelete() {
-    this._cardButtonDeleteElement.addEventListener("click", () => {
-      this._cardElement.remove();
-    });
+  _addLikeEventToButtonLike = () => {
+    this._cardButtonLikeElement.classList.toggle("place__button-like_liked");
+  };
+
+  _addDeleteCardEventToButtonDelete = () => {
+    this._cardElement.remove();
+    this._cardElement = null;
+  };
+
+  _setEventListeners() {
+    // set the name on the card
+    this._cardNameElement.textContent = this._cardName;
+
+    // set the image on the card
+    this._cardImageElement.src = this._cardPhotoURL;
+    this._cardImageElement.alt = this._cardName;
+
+    // add a zoom event to the card image
+    this._cardImageElement.addEventListener(
+      "click",
+      this._addZoomEventToCardImage
+    );
+
+    // add a like event to the like button
+    this._cardButtonLikeElement.addEventListener(
+      "click",
+      this._addLikeEventToButtonLike
+    );
+
+    // add a card deletion event to the delete button
+    this._cardButtonDeleteElement.addEventListener(
+      "click",
+      this._addDeleteCardEventToButtonDelete
+    );
   }
 
   generateCard() {
-    this._setNameToCard(this._cardName);
-    this._setImageToCard(this._cardPhotoURL, this._cardName);
-    this._addZoomEventToCardImage(this._cardPhotoURL, this._cardName);
-    this._addLikeEventToButtonLike();
-    this._addDeleteCardEventToButtonDelete();
-
+    this._setEventListeners();
     return this._cardElement;
   }
 }
