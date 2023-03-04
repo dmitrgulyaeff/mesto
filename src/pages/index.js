@@ -8,8 +8,6 @@ import Section from "../components/Section.js";
 import {
   initialCards,
   profileButtonEditProfile,
-  popupInputElName,
-  popupInputElDescription,
   profileButtonAddPlace,
   popupEditProfileSelector,
   popupAddCardSelector,
@@ -69,8 +67,10 @@ popupEditProfile.setEventListeners();
 profileButtonEditProfile.addEventListener("click", () => {
   const { nameElementContent, descriptionElementContent } =
     userInfo.getUserInfo();
-  popupInputElName.value = nameElementContent;
-  popupInputElDescription.value = descriptionElementContent;
+  popupEditProfile.setInputValues({
+    "pofile-description-input": nameElementContent,
+    "profile-name-input": descriptionElementContent,
+  });
   popupEditProfile.open();
 });
 

@@ -29,14 +29,6 @@ export const profileButtonEditProfile = document.querySelector(
   ".profile__button-edit-profile"
 );
 
-export const popupInputElName = document.querySelector(
-  ".popup__form-input_el_name"
-);
-
-export const popupInputElDescription = document.querySelector(
-  ".popup__form-input_el_description"
-);
-
 export const profileButtonAddPlace = document.querySelector(
   ".profile__button-add-place"
 );
