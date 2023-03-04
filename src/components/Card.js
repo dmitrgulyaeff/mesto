@@ -33,6 +33,7 @@ export default class Card {
     this._cardElement = null;
   };
 
+  // private method to set listeners
   _setEventListeners() {
     // set the name on the card
     this._cardNameElement.textContent = this._cardName;

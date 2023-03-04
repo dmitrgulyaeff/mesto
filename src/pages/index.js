@@ -21,22 +21,29 @@ const popupWithImage = new PopupWithImage({
 });
 popupWithImage.setEventListeners();
 
+function createCard(item) {
+  const card = new Card(item, "#places__list-item", () => {
+    popupWithImage.open({
+      imageDescription: item.name,
+      imageSrc: item.link,
+    });
+  });
+  const cardElement = card.generateCard();
+  return cardElement;
+}
+
 const cardList = new Section(
   {
     data: initialCards,
-    renderer: (cardValues) => {
-      const card = new Card(cardValues, "#places__list-item", () => {
-        popupWithImage.open({
-          imageDescription: cardValues.name,
-          imageSrc: cardValues.link,
-        });
-      });
-      cardList.setItem(card.generateCard());
-    },
+    renderer: createCard,
   },
   ".places__list"
 );
+
 cardList.renderItems();
+cardList.rendererItems.forEach((element) => {
+  cardList.addItem(element);
+});
 
 // user info
 const userInfo = new UserInfo({
@@ -71,18 +78,8 @@ profileButtonEditProfile.addEventListener("click", () => {
 const popupAddCard = new PopupWithForm({
   popupSelector: popupAddCardSelector,
   submitCallback: (inputValues) => {
-    const { "place-name-input": name, "place-url-input": url } = inputValues;
-    const card = new Card(
-      { name: name, link: url },
-      "#places__list-item",
-      () => {
-        popupWithImage.open({
-          imageDescription: name,
-          imageSrc: url,
-        });
-      }
-    );
-    cardList.setItem(card.generateCard());
+    const { "place-name-input": name, "place-url-input": link } = inputValues;
+    cardList.addItem(createCard({ name, link }));
   },
 });
 popupAddCard.setEventListeners();
