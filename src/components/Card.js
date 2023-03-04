@@ -35,13 +35,6 @@ export default class Card {
 
   // private method to set listeners
   _setEventListeners() {
-    // set the name on the card
-    this._cardNameElement.textContent = this._cardName;
-
-    // set the image on the card
-    this._cardImageElement.src = this._cardPhotoURL;
-    this._cardImageElement.alt = this._cardName;
-
     // add a zoom event to the card image
     this._cardImageElement.addEventListener("click", this._handleCardClick);
 
@@ -60,6 +53,13 @@ export default class Card {
 
   generateCard() {
     this._setEventListeners();
+    // set the name on the card
+    this._cardNameElement.textContent = this._cardName;
+
+    // set the image on the card
+    this._cardImageElement.src = this._cardPhotoURL;
+    this._cardImageElement.alt = this._cardName;
+
     return this._cardElement;
   }
 }
