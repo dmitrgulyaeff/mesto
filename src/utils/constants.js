@@ -1,32 +1,9 @@
-export const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
-
 export const profileButtonEditProfile = document.querySelector(
   ".profile__button-edit-profile"
+);
+
+export const profileButtonEditAvatar = document.querySelector(
+  ".profile__button-edit-avatar"
 );
 
 export const profileButtonAddPlace = document.querySelector(
@@ -34,6 +11,7 @@ export const profileButtonAddPlace = document.querySelector(
 );
 
 export const popupEditProfileSelector = ".popup_el_edit-profile";
+export const popupEditAvatarSelector = ".popup_el_edit-avatar";
 export const popupAddCardSelector = ".popup_el_add-place";
 
 export const formSettings = {

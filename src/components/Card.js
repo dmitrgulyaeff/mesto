@@ -1,5 +1,15 @@
 export default class Card {
-  constructor({ name, link }, templateCardSelector, handleCardClick) {
+  constructor(
+    { name, link, owner: cardOwner, _id: cardId, likes },
+    templateCardSelector,
+    handleCardClick,
+    myId,
+    handlerDeleteCard,
+    toggleLike
+  ) {
+    this._cardId = cardId;
+    this._handlerDeleteCard = handlerDeleteCard;
+    this._toggleLike = toggleLike;
     this._cardName = name;
     this._cardPhotoURL = link;
     this._templateCardSelector = templateCardSelector;
@@ -13,24 +23,40 @@ export default class Card {
     this._cardButtonDeleteElement = this._cardElement.querySelector(
       ".place__button-delete-place"
     );
+    this._cardNumberLikesElement = this._cardElement.querySelector(
+      ".place__number-likes"
+    );
+    this._isMyCard = cardOwner["_id"] === myId;
+    this._numberLikes = likes.length;
+    this._iLikeIt = likes.some((like) => {
+      return like["_id"] === myId;
+    });
   }
 
   _getCardTemplate() {
-    const cardElement = document
+    return document
       .querySelector(this._templateCardSelector)
       .content.querySelector(".places__list-item")
       .cloneNode(true);
-
-    return cardElement;
   }
 
   _addLikeEventToButtonLike = () => {
-    this._cardButtonLikeElement.classList.toggle("place__button-like_liked");
+    this._iLikeIt = !this._iLikeIt;
+    this._toggleLike(this._cardId, this._iLikeIt).then((res) => {
+      this._numberLikes = res["likes"].length;
+      this._cardNumberLikesElement.textContent = this._numberLikes;
+      if (this._iLikeIt) {
+        this._cardButtonLikeElement.classList.add("place__button-like_liked");
+      } else {
+        this._cardButtonLikeElement.classList.remove(
+          "place__button-like_liked"
+        );
+      }
+    });
   };
 
   _addDeleteCardEventToButtonDelete = () => {
-    this._cardElement.remove();
-    this._cardElement = null;
+    this._handlerDeleteCard(this._cardId, this._cardElement);
   };
 
   // private method to set listeners
@@ -44,21 +70,29 @@ export default class Card {
       this._addLikeEventToButtonLike
     );
 
-    // add a card deletion event to the delete button
-    this._cardButtonDeleteElement.addEventListener(
-      "click",
-      this._addDeleteCardEventToButtonDelete
-    );
+    if (this._isMyCard) {
+      // add a card deletion event to the delete button
+      this._cardButtonDeleteElement.addEventListener(
+        "click",
+        this._addDeleteCardEventToButtonDelete
+      );
+    } else {
+      this._cardButtonDeleteElement.remove();
+    }
   }
 
   generateCard() {
     this._setEventListeners();
     // set the name on the card
     this._cardNameElement.textContent = this._cardName;
-
+    this._cardNumberLikesElement.textContent = this._numberLikes;
     // set the image on the card
     this._cardImageElement.src = this._cardPhotoURL;
     this._cardImageElement.alt = this._cardName;
+
+    if (this._iLikeIt) {
+      this._cardButtonLikeElement.classList.add("place__button-like_liked");
+    }
 
     return this._cardElement;
   }

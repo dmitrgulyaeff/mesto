@@ -1,19 +1,27 @@
 import Popup from "./Popup.js";
+
 export default class PopupWithForm extends Popup {
   constructor({ popupSelector, submitCallback }) {
     super(popupSelector);
     this._submitCallback = submitCallback;
     this._popupForm = this._popup.querySelector(".popup__form");
     this._inputList = this._popup.querySelectorAll("input");
+    this._buttonForm = this._popup.querySelector(".popup__form-button-submit");
+    this._defaultButtonValue = this._buttonForm.textContent;
   }
+
   setEventListeners() {
     super.setEventListeners();
     this._popupForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      this._submitCallback(this._getInputValues());
-      this.close();
+      this._buttonForm.textContent = "Сохранение...";
+      this._submitCallback(this._getInputValues()).then(() => {
+        this.close();
+        this._buttonForm.textContent = this._defaultButtonValue;
+      });
     });
   }
+
   _getInputValues() {
     const inputValues = {};
     this._inputList.forEach((input) => {

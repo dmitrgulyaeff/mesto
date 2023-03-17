@@ -6,42 +6,38 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import {
-  initialCards,
-  profileButtonEditProfile,
-  profileButtonAddPlace,
-  popupEditProfileSelector,
-  popupAddCardSelector,
   formSettings,
+  popupAddCardSelector,
+  popupEditAvatarSelector,
+  popupEditProfileSelector,
+  profileButtonAddPlace,
+  profileButtonEditAvatar,
+  profileButtonEditProfile,
 } from "../utils/constants.js";
+import Api from "../components/Api";
+import PopupDeleteCard from "../components/PopupDeleteCard.js";
+import Avatar from "../components/Avatar";
 
+// initialization api
+const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-61",
+  headers: {
+    authorization: "b67e047d-e0f1-46ee-a2b0-fa487b6441a0",
+    "Content-Type": "application/json",
+  },
+});
+
+// popup for zoom card
 const popupWithImage = new PopupWithImage({
   popupSelector: ".popup_el_zoom-image",
 });
 popupWithImage.setEventListeners();
 
-function createCard(item) {
-  const card = new Card(item, "#places__list-item", () => {
-    popupWithImage.open({
-      imageDescription: item.name,
-      imageSrc: item.link,
-    });
-  });
-  const cardElement = card.generateCard();
-  return cardElement;
-}
-
-const cardList = new Section(
-  {
-    data: initialCards,
-    renderer: createCard,
-  },
-  ".places__list"
-);
-
-cardList.renderItems();
-cardList.rendererItems.forEach((element) => {
-  cardList.addItem(element);
+// popup for delete card
+const popupDeleteCard = new PopupDeleteCard({
+  popupSelector: ".popup_el_delete-card",
 });
+popupDeleteCard.setEventListeners();
 
 // user info
 const userInfo = new UserInfo({
@@ -49,18 +45,85 @@ const userInfo = new UserInfo({
   descriptionSelector: ".profile__description",
 });
 
+// avatar
+const avatar = new Avatar(".profile__avatar");
+
+// initialise initial cards list and enable buttons to add/delete cards
+api.getProfileInfo().then((profileInfo) => {
+  const createCard = (item) => {
+    const card = new Card(
+      item,
+      "#places__list-item",
+      () => {
+        popupWithImage.open({
+          imageDescription: item.name,
+          imageSrc: item.link,
+        });
+      },
+      profileInfo["_id"],
+      (id, cardEl) =>
+        popupDeleteCard.open({
+          apiDeleteCard: () => {
+            return api.deleteCard(id);
+          },
+          cardElement: cardEl,
+        }),
+      (id, isLiked) => api.toggleLike(id, isLiked)
+    );
+    return card.generateCard();
+  };
+
+  // initialise initial cards
+  api.getInitialCards().then((initialCards) => {
+    const cardList = new Section(
+      {
+        data: initialCards.reverse(),
+        renderer: createCard,
+      },
+      ".places__list"
+    );
+    cardList.renderItems();
+    cardList.rendererItems.forEach((element) => {
+      cardList.addItem(element);
+    });
+
+    // popup to add card
+    const popupAddCard = new PopupWithForm({
+      popupSelector: popupAddCardSelector,
+      submitCallback: (inputValues) => {
+        const { "place-name-input": name, "place-url-input": link } =
+          inputValues;
+        return api
+          .addNewCard({ name, link })
+          .then(createCard)
+          .then((el) => cardList.addItem(el));
+      },
+    });
+    popupAddCard.setEventListeners();
+    profileButtonAddPlace.addEventListener("click", () => {
+      popupAddCard.open();
+    });
+  });
+
+  // set user info
+  userInfo.setUserInfo({
+    newName: profileInfo["name"],
+    newDescription: profileInfo["about"],
+  });
+  avatar.setNewAvatar(profileInfo["avatar"]);
+});
+
 // popup to edit profile
 const popupEditProfile = new PopupWithForm({
   popupSelector: popupEditProfileSelector,
   submitCallback: (inputValues) => {
-    const {
-      "pofile-description-input": description,
-      "profile-name-input": name,
-    } = inputValues;
-    userInfo.setUserInfo({ newName: name, newDescription: description });
+    const { "profile-description-input": about, "profile-name-input": name } =
+      inputValues;
+    return api.setProfileInfo({ name, about }).then(({ name, about }) => {
+      userInfo.setUserInfo({ newName: name, newDescription: about });
+    });
   },
 });
-
 popupEditProfile.setEventListeners();
 
 // button to open popup to edit profile
@@ -68,24 +131,26 @@ profileButtonEditProfile.addEventListener("click", () => {
   const { nameElementContent, descriptionElementContent } =
     userInfo.getUserInfo();
   popupEditProfile.setInputValues({
-    "pofile-description-input": nameElementContent,
-    "profile-name-input": descriptionElementContent,
+    "profile-description-input": descriptionElementContent,
+    "profile-name-input": nameElementContent,
   });
   popupEditProfile.open();
 });
 
-// popup to add card
-const popupAddCard = new PopupWithForm({
-  popupSelector: popupAddCardSelector,
+// popup to edit avatar
+const popupEditAvatar = new PopupWithForm({
+  popupSelector: popupEditAvatarSelector,
   submitCallback: (inputValues) => {
-    const { "place-name-input": name, "place-url-input": link } = inputValues;
-    cardList.addItem(createCard({ name, link }));
+    const { "avatar-url-input": avatarUrl } = inputValues;
+    return api.updateProfileAvatar(avatarUrl).then((user) => {
+      avatar.setNewAvatar(user["avatar"]);
+    });
   },
 });
-popupAddCard.setEventListeners();
+popupEditAvatar.setEventListeners();
 
-profileButtonAddPlace.addEventListener("click", () => {
-  popupAddCard.open();
+profileButtonEditAvatar.addEventListener("click", () => {
+  popupEditAvatar.open();
 });
 
 // valdation
@@ -93,9 +158,14 @@ const profileValidation = new FormValidator(
   formSettings,
   document.querySelector(popupEditProfileSelector)
 );
+const avatarValidation = new FormValidator(
+  formSettings,
+  document.querySelector(popupEditAvatarSelector)
+);
 const newCardValidation = new FormValidator(
   formSettings,
   document.querySelector(popupAddCardSelector)
 );
 profileValidation.enableValidation();
+avatarValidation.enableValidation();
 newCardValidation.enableValidation();

@@ -17,11 +17,7 @@
     </header>
     <main class="content">
       <section class="profile">
-        <img
-          class="profile__avatar"
-          src="<%=require('./images/Kusto.jpg')%>"
-          alt="Кусто"
-        />
+        <img class="profile__avatar" src="" alt="Аватар" />
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button
           class="profile__button-edit-profile"
@@ -34,6 +30,7 @@
           type="button"
           aria-label="Добавить место"
         ></button>
+        <button class="profile__button-edit-avatar"></button>
       </section>
       <section class="places">
         <ul class="places__list"></ul>
@@ -57,7 +54,7 @@
             class="popup__form-input popup__form-input_el_place-name"
             type="text"
             placeholder="Название"
-            name="name"
+            name="cardName"
             minlength="2"
             maxlength="30"
             required
@@ -68,7 +65,7 @@
             class="popup__form-input popup__form-input_el_place-picture-url"
             type="url"
             placeholder="Ссылка на картинку"
-            name="pictureURL"
+            name="cardPictureUrl"
             required
           />
           <span class="popup__form-input-error place-url-input-error"></span>
@@ -77,6 +74,36 @@
             type="submit"
           >
             Создать
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="popup popup_el_edit-avatar">
+      <div class="popup__inner popup__inner_type_form">
+        <button
+          class="popup__button-close"
+          type="button"
+          aria-label="Закрыть поп-ап"
+        ></button>
+
+        <h2 class="popup__title">Обновить аватар</h2>
+
+        <form class="popup__form" name="edit-avatar">
+          <input
+            id="avatar-url-input"
+            class="popup__form-input popup__form-input_el_avatar-picture-url"
+            type="url"
+            placeholder="Ссылка на картинку"
+            name="avatarPictureUrl"
+            required
+          />
+          <span class="popup__form-input-error avatar-url-input-error"></span>
+          <button
+            class="popup__form-button-submit popup__form-button-submit_el_adding-place"
+            type="submit"
+          >
+            Сохранить
           </button>
         </form>
       </div>
@@ -103,7 +130,7 @@
           />
           <span class="popup__form-input-error profile-name-input-error"></span>
           <input
-            id="pofile-description-input"
+            id="profile-description-input"
             class="popup__form-input popup__form-input_el_description"
             type="text"
             placeholder="О себе"
@@ -113,7 +140,7 @@
             required
           />
           <span
-            class="popup__form-input-error pofile-description-input-error"
+            class="popup__form-input-error profile-description-input-error"
           ></span>
           <button
             class="popup__form-button-submit popup__form-button-submit_el_edit-profile"
@@ -125,6 +152,24 @@
       </div>
     </section>
 
+    <section class="popup popup_el_delete-card">
+      <div class="popup__inner popup__inner_type_form">
+        <button
+          class="popup__button-close"
+          type="button"
+          aria-label="Закрыть поп-ап"
+        ></button>
+
+        <h2 class="popup__title popup__title_el_delete">Вы уверены?</h2>
+        <button
+          class="popup__form-button-submit popup__form-button-submit_el_delete-card"
+          type="submit"
+        >
+          Да
+        </button>
+      </div>
+    </section>
+
     <section class="popup popup_el_zoom-image">
       <div class="popup__inner popup__inner_type_zoom-image">
         <button
@@ -132,7 +177,7 @@
           type="button"
           aria-label="Закрыть поп-ап"
         ></button>
-        <img class="popup__image" />
+        <img class="popup__image" alt="" src="" />
         <p class="popup__image-description"></p>
       </div>
     </section>
@@ -145,8 +190,8 @@
             type="button"
             aria-label="Удалить"
           ></button>
-
-          <img class="place__photo" />
+          <img class="place__photo" src="" alt="" />
+          <p class="place__number-likes">1</p>
           <h2 class="place__name"></h2>
           <button
             class="place__button-like"
