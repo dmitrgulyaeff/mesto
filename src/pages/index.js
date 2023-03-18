@@ -16,7 +16,6 @@ import {
 } from "../utils/constants.js";
 import Api from "../components/Api";
 import PopupDeleteCard from "../components/PopupDeleteCard.js";
-import Avatar from "../components/Avatar";
 
 // initialization api
 const api = new Api({
@@ -43,13 +42,13 @@ popupDeleteCard.setEventListeners();
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__avatar",
 });
-
-// avatar
-const avatar = new Avatar(".profile__avatar");
 
 // initialise initial cards list and enable buttons to add/delete cards
 api.getProfileInfo().then((profileInfo) => {
+  userInfo.setUserInfo(profileInfo);
+
   const createCard = (item) => {
     const card = new Card(
       item,
@@ -60,7 +59,7 @@ api.getProfileInfo().then((profileInfo) => {
           imageSrc: item.link,
         });
       },
-      profileInfo["_id"],
+      userInfo.getUserId(),
       (id, cardEl) =>
         popupDeleteCard.open({
           apiDeleteCard: () => {
@@ -68,7 +67,10 @@ api.getProfileInfo().then((profileInfo) => {
           },
           cardElement: cardEl,
         }),
-      (id, isLiked) => api.toggleLike(id, isLiked)
+      (id, isLiked) =>
+        api
+          .toggleLike(id, isLiked)
+          .catch((err) => console.log("Ошибка добавления/снятия лайка", err))
     );
     return card.generateCard();
   };
@@ -96,7 +98,8 @@ api.getProfileInfo().then((profileInfo) => {
         return api
           .addNewCard({ name, link })
           .then(createCard)
-          .then((el) => cardList.addItem(el));
+          .then((el) => cardList.addItem(el))
+          .catch((err) => console.log("Ошибка добавления карточки", err));
       },
     });
     popupAddCard.setEventListeners();
@@ -104,13 +107,6 @@ api.getProfileInfo().then((profileInfo) => {
       popupAddCard.open();
     });
   });
-
-  // set user info
-  userInfo.setUserInfo({
-    newName: profileInfo["name"],
-    newDescription: profileInfo["about"],
-  });
-  avatar.setNewAvatar(profileInfo["avatar"]);
 });
 
 // popup to edit profile
@@ -119,9 +115,14 @@ const popupEditProfile = new PopupWithForm({
   submitCallback: (inputValues) => {
     const { "profile-description-input": about, "profile-name-input": name } =
       inputValues;
-    return api.setProfileInfo({ name, about }).then(({ name, about }) => {
-      userInfo.setUserInfo({ newName: name, newDescription: about });
-    });
+    return api
+      .setProfileInfo({ name, about })
+      .then((profileInfo) => {
+        userInfo.setUserInfo(profileInfo);
+      })
+      .catch((err) => {
+        console.log("Ошибка редактирования информации о пользователе", err);
+      });
   },
 });
 popupEditProfile.setEventListeners();
@@ -142,9 +143,14 @@ const popupEditAvatar = new PopupWithForm({
   popupSelector: popupEditAvatarSelector,
   submitCallback: (inputValues) => {
     const { "avatar-url-input": avatarUrl } = inputValues;
-    return api.updateProfileAvatar(avatarUrl).then((user) => {
-      avatar.setNewAvatar(user["avatar"]);
-    });
+    return api
+      .updateProfileAvatar(avatarUrl)
+      .then((user) => {
+        userInfo.setNewAvatar(user);
+      })
+      .catch((err) => {
+        console.log("Ошибка редактирования аватара пользователя", err);
+      });
   },
 });
 popupEditAvatar.setEventListeners();
