@@ -13,11 +13,13 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._popupForm.addEventListener("submit", (event) => {
+      this._buttonForm.disabled = true;
       event.preventDefault();
       this._buttonForm.textContent = "Сохранение...";
       this._submitCallback(this._getInputValues()).then(() => {
         this.close();
         this._buttonForm.textContent = this._defaultButtonValue;
+        this._buttonForm.disabled = false;
       });
     });
   }
