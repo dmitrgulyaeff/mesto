@@ -9,20 +9,33 @@ export default class PopupDeleteCard extends Popup {
     this.defaultButtonTextContent = String(this._buttonDeleteCard.textContent);
   }
 
-  open = ({ apiDeleteCard, cardElement }) => {
-    this._buttonDeleteCard.textContent = this.defaultButtonTextContent;
+  close() {
+    super.close();
+    this._buttonDeleteCard.removeEventListener("click", this.deleteCard);
+  }
 
-    const deleteCard = () => {
-      this._buttonDeleteCard.textContent = "Удаляю...";
-      apiDeleteCard().then(() => {
-        super.close();
-        cardElement.remove();
-        cardElement = null;
-        this._buttonDeleteCard.removeEventListener("click", deleteCard);
+  deleteCard = () => {
+    this._buttonDeleteCard.textContent = "Удаляю...";
+    this._buttonDeleteCard.disabled = true;
+    this._apiDeleteCard()
+      .then(() => {
+        this.close();
+        this._cardElement.remove();
+        this._cardElement = null;
+      })
+      .catch((err) => {
+        console.log("Ошибка удаления карточки", err);
+      })
+      .finally(() => {
+        this._buttonDeleteCard.textContent = this.defaultButtonTextContent;
+        this._buttonDeleteCard.disabled = false;
       });
-    };
+  };
 
-    this._buttonDeleteCard.addEventListener("click", deleteCard);
+  open = ({ apiDeleteCard, cardElement }) => {
+    this._apiDeleteCard = apiDeleteCard;
+    this._cardElement = cardElement;
+    this._buttonDeleteCard.addEventListener("click", this.deleteCard);
     super.open();
   };
 }
