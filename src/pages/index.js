@@ -45,38 +45,37 @@ const userInfo = new UserInfo({
   avatarSelector: ".profile__avatar",
 });
 
-// initialise initial cards list and enable buttons to add/delete cards
-api.getProfileInfo().then((profileInfo) => {
-  userInfo.setUserInfo(profileInfo);
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
+  .then(([profileInfo, initialCards]) => {
+    userInfo.setUserInfo(profileInfo);
 
-  const createCard = (item) => {
-    const card = new Card(
-      item,
-      "#places__list-item",
-      () => {
-        popupWithImage.open({
-          imageDescription: item.name,
-          imageSrc: item.link,
-        });
-      },
-      userInfo.getUserId(),
-      (id, cardEl) =>
-        popupDeleteCard.open({
-          apiDeleteCard: () => {
-            return api.deleteCard(id);
-          },
-          cardElement: cardEl,
-        }),
-      (id, isLiked) =>
-        api
-          .toggleLike(id, isLiked)
-          .catch((err) => console.log("Ошибка добавления/снятия лайка", err))
-    );
-    return card.generateCard();
-  };
+    const createCard = (item) => {
+      const card = new Card(
+        item,
+        "#places__list-item",
+        () => {
+          popupWithImage.open({
+            imageDescription: item.name,
+            imageSrc: item.link,
+          });
+        },
+        userInfo.getUserId(),
+        (id, cardEl) =>
+          popupDeleteCard.open({
+            apiDeleteCard: () => {
+              return api.deleteCard(id);
+            },
+            cardElement: cardEl,
+          }),
+        (id, isLiked) =>
+          api
+            .toggleLike(id, isLiked)
+            .catch((err) => console.log("Ошибка добавления/снятия лайка", err))
+      );
+      return card.generateCard();
+    };
 
-  // initialise initial cards
-  api.getInitialCards().then((initialCards) => {
+    // initialise initial cards
     const cardList = new Section(
       {
         data: initialCards.reverse(),
@@ -106,8 +105,8 @@ api.getProfileInfo().then((profileInfo) => {
     profileButtonAddPlace.addEventListener("click", () => {
       popupAddCard.open();
     });
-  });
-});
+  })
+  .catch((err) => console.log("Ошибка при получении данных от сервера", err));
 
 // popup to edit profile
 const popupEditProfile = new PopupWithForm({
@@ -164,14 +163,16 @@ const profileValidation = new FormValidator(
   formSettings,
   document.querySelector(popupEditProfileSelector)
 );
+profileValidation.enableValidation();
+
 const avatarValidation = new FormValidator(
   formSettings,
   document.querySelector(popupEditAvatarSelector)
 );
+avatarValidation.enableValidation();
+
 const newCardValidation = new FormValidator(
   formSettings,
   document.querySelector(popupAddCardSelector)
 );
-profileValidation.enableValidation();
-avatarValidation.enableValidation();
 newCardValidation.enableValidation();
