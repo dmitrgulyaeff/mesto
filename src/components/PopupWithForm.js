@@ -16,11 +16,17 @@ export default class PopupWithForm extends Popup {
       this._buttonForm.disabled = true;
       event.preventDefault();
       this._buttonForm.textContent = "Сохранение...";
-      this._submitCallback(this._getInputValues()).then(() => {
-        this.close();
-        this._buttonForm.textContent = this._defaultButtonValue;
-        this._buttonForm.disabled = false;
-      });
+      this._submitCallback(this._getInputValues())
+        .then(() => {
+          this.close();
+          this._buttonForm.disabled = false;
+        })
+        .catch((err) => {
+          console.log("Ошибка удаления карточки", err);
+        })
+        .finally(() => {
+          this._buttonForm.textContent = this._defaultButtonValue;
+        });
     });
   }
 
