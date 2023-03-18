@@ -5,14 +5,13 @@ export default class Api {
   }
 
   _doFetch(url, requestOptions) {
-    return fetch(url, requestOptions)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((error) => console.log("error", error));
+    return fetch(url, requestOptions).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+    // .catch((error) => console.log("error", error));
   }
 
   // 1. Загрузка информации о пользователе с сервера
